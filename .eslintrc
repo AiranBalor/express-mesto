@@ -7,7 +7,6 @@
         "allow": ["_id"]
       }
     ],
-    "no-console": "off",
-    "import/newline-after-import": "off"
+    "no-console": "off"
   }
 }
