@@ -6,7 +6,7 @@ const {
 const validateId = celebrate({
   params: Joi.object()
     .keys({
-      id: Joi.string()
+      userId: Joi.string()
         .alphanum()
         .hex()
         .length(24),

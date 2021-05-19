@@ -61,24 +61,24 @@ module.exports.createUser = (req, res, next) => {
       avatar,
       email,
       password: hash,
-    }))
-    .then((user) => res.status(200)
-      .send({
-        _id: user._id,
-        name: user.name,
-        about: user.about,
-        avatar: user.avatar,
-        email: user.email,
-      }))
-    .catch((err) => {
-      console.log(err);
-      if (err.name === 'MongoError' || err.code === 11000) {
-        throw new AlreadyExistUserError('Пользователь с таким email уже существует');
-      } else if (err.name === 'ValidationError' || err.name === 'CastError') {
-        throw new ValidationError('Пароль или почта некорректны');
-      }
     })
-    .catch(next);
+      .then((user) => {
+        res.status(200).send({
+          _id: user._id,
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
+          email: user.email,
+        });
+      })
+      .catch((err) => {
+        if (err.name === 'MongoError' || err.code === 11000) {
+          throw new AlreadyExistUserError('Пользователь с таким email уже существует');
+        } else if (err.name === 'ValidationError' || err.name === 'CastError') {
+          throw new ValidationError('Передана некорретная почта или пароль');
+        }
+      })
+      .catch(next));
 };
 
 module.exports.updateUser = (req, res, next) => {
